@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Amine PS4</title>
+  <style>
+    :root{--bg:#080b10;--panel:rgba(18,23,32,.78);--panel2:rgba(11,15,22,.88);--line:rgba(255,255,255,.10);--text:#f4f7fb;--muted:#94a0b2;--accent:#7fb5ff;--ok:#75e0ad;--err:#ff7f91}
+    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(900px 500px at 70% 12%,rgba(58,104,170,.18),transparent 65%),radial-gradient(700px 500px at 12% 90%,rgba(50,70,100,.13),transparent 65%),linear-gradient(145deg,#070a0f,#0b1018 52%,#070a0f);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 46%,rgba(255,255,255,.025) 50%,transparent 54%);opacity:.55}
+    .shell{width:min(1180px,92vw);height:min(720px,88vh);margin:auto;position:relative;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:18px}
+    .top{display:flex;align-items:center;justify-content:space-between;padding:8px 4px}
+    .brand{display:flex;align-items:center;gap:14px}.mark{width:42px;height:42px;border:1px solid rgba(127,181,255,.45);border-radius:14px;background:linear-gradient(145deg,rgba(127,181,255,.18),rgba(255,255,255,.03));display:grid;place-items:center;box-shadow:0 8px 30px rgba(0,0,0,.25)}.mark:after{content:"A";font-weight:700;font-size:20px;color:#dceaff}.name{font-size:25px;font-weight:650;letter-spacing:.2px}.sub{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:1.4px;text-transform:uppercase}
+    .badge{padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.035);color:#bdc7d6;font-size:12px;letter-spacing:.6px}
+    .card{flex:1;min-height:0;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,rgba(20,26,36,.82),rgba(8,12,18,.88));box-shadow:0 25px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.035);overflow:hidden;display:flex;flex-direction:column}
+    .hero{padding:30px 34px 22px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.hero h1{margin:0;font-size:31px;font-weight:600;letter-spacing:-.5px}.hero p{margin:7px 0 0;color:var(--muted);font-size:14px}.state{min-width:155px;text-align:right}.state-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px}.state-value{margin-top:5px;font-size:15px;color:#dfe8f6}
+    #console{flex:1;min-height:0;margin:0;padding:22px 28px 28px;overflow:auto;color:#aeb8c8;font:13px/1.75 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;white-space:pre-wrap;word-break:break-word}#console::-webkit-scrollbar{width:6px}#console::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+    .bottom{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;border-top:1px solid var(--line);color:#768297;font-size:11px;letter-spacing:.4px}.hint{opacity:.9}.fw{color:#aab6c8}
+    @media(max-width:700px){.shell{width:94vw;height:92vh}.hero{padding:23px 22px 18px}.hero h1{font-size:25px}.state{display:none}.card{border-radius:20px}.name{font-size:21px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div class="brand"><div class="mark"></div><div><div class="name">Amine PS4</div><div class="sub">Relapse • PS5 Interface</div></div></div><div class="badge">SYSTEM READY</div></header>
+    <section class="card">
+      <div class="hero"><div><h1>Relapse</h1><p>Clean, lightweight interface for the PS5 WebKit environment.</p></div><div class="state"><div class="state-label">Status</div><div class="state-value" id="status">Initializing…</div></div></div>
+      <div id="console" aria-live="polite"></div>
+      <footer class="bottom"><span class="hint">Amine PS4</span><span class="fw" id="firmwareLabel">Detecting firmware…</span></footer>
+    </section>
+  </main>
+  <script src="./src/firmware.js"></script>
+  <script src="./src/main.js"></script>
+  <script src="./src/rop.js"></script>
+  <script src="./src/utils/syscalls.js"></script>
+  <script type="module" src="./src/site.js"></script>
+</body>
+</html>
