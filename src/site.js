@@ -55,6 +55,7 @@ function getWebKitBase() {
 }
 
 async function run() {
+  if (window.__offlineCacheReady) await window.__offlineCacheReady;
   const rejection = window.firmware.rejection();
   if (rejection)
     throw new Error(rejection);
