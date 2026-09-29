@@ -22,13 +22,57 @@
 </head>
 <body>
   <main class="shell">
-    <header class="top"><div class="brand"><div class="mark"></div><div><div class="name">Amine PS4</div><div class="sub">Relapse • PS5 Interface</div></div></div><div class="badge">SYSTEM READY</div></header>
+    <header class="top"><div class="brand"><div class="mark"></div><div><div class="name">Amine PS4</div><div class="sub">Relapse • PS5 Interface</div></div></div><div class="badge" id="cacheBadge">CACHE: CHECKING</div></header>
     <section class="card">
-      <div class="hero"><div><h1>Relapse</h1><p>Clean, lightweight interface for the PS5 WebKit environment.</p></div><div class="state"><div class="state-label">Status</div><div class="state-value" id="status">Initializing…</div></div></div>
+      <div class="hero"><div><h1>Relapse</h1><p>Clean, lightweight interface for the PS5 WebKit environment.</p></div><div class="state"><div class="state-label">Status</div><div class="state-value" id="status">Initializing…</div><div id="cacheStatus" style="margin-top:6px;font-size:11px;color:#94a0b2">Offline cache: checking…</div></div></div>
       <div id="console" aria-live="polite"></div>
       <footer class="bottom"><span class="hint">Amine PS4</span><span class="fw" id="firmwareLabel">Detecting firmware…</span></footer>
     </section>
   </main>
+  <script>
+    window.__offlineCacheReady = new Promise(function (resolve) {
+      if (!("serviceWorker" in navigator) || !/^https?:$/.test(location.protocol)) {
+        resolve(false);
+        return;
+      }
+      var settled = false;
+      function finish(ok) {
+        if (!settled) { settled = true; resolve(ok); }
+      }
+      navigator.serviceWorker.register("./sw.js", {scope: "./"})
+        .then(function (reg) {
+          function ask() {
+            if (navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({type:"CACHE_PREPARE"});
+            else if (reg.active) reg.active.postMessage({type:"CACHE_PREPARE"});
+          }
+          navigator.serviceWorker.addEventListener("message", function (e) {
+            var d=e.data||{};
+            if (d.type==="CACHE_PROGRESS") {
+              var b=document.getElementById("cacheBadge"), st=document.getElementById("cacheStatus");
+              if (b) b.textContent="CACHE: "+d.percent+"%";
+              if (st) st.textContent="Offline cache: "+d.percent+"%";
+            } else if (d.type==="CACHE_READY") {
+              var b2=document.getElementById("cacheBadge"), st2=document.getElementById("cacheStatus");
+              if (b2) b2.textContent="CACHE: READY";
+              if (st2) st2.textContent="Offline cache: ready";
+              finish(true);
+            } else if (d.type==="CACHE_ERROR") {
+              var b3=document.getElementById("cacheBadge"), st3=document.getElementById("cacheStatus");
+              if (b3) b3.textContent="CACHE: RETRY";
+              if (st3) st3.textContent="Offline cache: "+d.message;
+            }
+          });
+          if (navigator.serviceWorker.controller) ask();
+          else navigator.serviceWorker.addEventListener("controllerchange", ask, {once:true});
+        })
+        .catch(function () {
+          var b=document.getElementById("cacheBadge"), st=document.getElementById("cacheStatus");
+          if (b) b.textContent="CACHE: RETRY";
+          if (st) st.textContent="Offline cache: registration failed";
+          finish(false);
+        });
+    });
+  </script>
   <script src="./src/firmware.js"></script>
   <script src="./src/main.js"></script>
   <script src="./src/rop.js"></script>

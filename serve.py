@@ -14,7 +14,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         pass
 
     def end_headers(self):
-        self.send_header("Cache-Control", "no-store")
+        # Service Worker owns offline caching. Avoid sending no-store globally,
+        # while keeping normal HTTP behavior simple for the local server.
+        self.send_header("Cache-Control", "no-cache")
         super().end_headers()
 
 def local_ip():
